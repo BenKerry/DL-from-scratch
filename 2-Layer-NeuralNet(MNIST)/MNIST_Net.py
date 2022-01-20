@@ -1,45 +1,5 @@
 import numpy as np
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(x))
-
-def softmax(x):
-    max_val = np.max(x)
-    exp_x = np.exp(x - max_val)
-    exp_x_sum = np.sum(exp_x - max_val)
-
-    return exp_x / exp_x_sum
-
-def CEE(y, t):
-    if y.ndim == 1:
-        t = y.reshape(1, t.size)
-        y = y.reshape(1, y.size)
-
-    return -np.sum(y * np.log(t + 1e-7)) / y.shape[0]
-
-def calc_gradient(f, x):
-    h = 1e-4
-    grad = np.zeros_like(x)
-
-    it = np.nditer(x, flags=['multi_index'], op_flags=['readwrite'])
-    
-    while not it.finished:
-        i = it.multi_index
-        tmp = x[i]
-
-        x[i] = tmp + h
-        y1 = f(x)
-
-        x[i] = tmp - h
-        y2 = f(x)
-
-        x[i] = tmp
-        grad[i] = (y1 - y2) / (2 * h)
-
-        it.iternext()
-
-    return grad
-
 class MNIST_Net:
     def __init__(self, input_size:int, hidden_size:int, output_size:int, weight_init_std=0.01):
         self.params = {}
@@ -80,11 +40,3 @@ class MNIST_Net:
         grads['b2'] = calc_gradient(loss_W, self.params['b2'])
 
         return grads
-
-net = MNIST_Net(784, 100, 10)
-
-x = np.random.rand(100, 784)
-y = net.predict(x)
-t = np.random.rand(100, 10)
-
-grads = net.calc_gradient(x, t)
