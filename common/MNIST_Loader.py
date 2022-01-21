@@ -44,10 +44,7 @@ def _load_imgs(fname):
         _log("[_load_imgs()] Loading images from {0}".format(fname))
         with gzip.open("MNIST_Raw/" + fname, "rb") as fp:
             data = np.frombuffer(fp.read(), np.uint8, offset=16)
-        
-        # row 차원 위치에 -1을 넣으면, 
-        # shape가 (numOfData / column) * column이 됨.
-        print(data.shape)
+
         data = data.reshape(-1, 784)
         _dump_pkl(fname, data)
 
