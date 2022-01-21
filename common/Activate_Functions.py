@@ -9,3 +9,6 @@ def softmax(x):
     exp_x_sum = np.sum(exp_x - max_val)
 
     return exp_x / exp_x_sum
+
+def relu(x):
+    return np.maximum(0, x)
