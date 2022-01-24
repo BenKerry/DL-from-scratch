@@ -26,8 +26,8 @@ t = None
 s_training = time.time()
 
 for i in range(epoch):
-    s_epoch = time.time()
     for k in range(iter_for_epoch):
+        s_batch = time.time()
         batch_mask = random.randint(0, train_data_cnt - batch_size)
 
         x = x_train[batch_mask:batch_mask + batch_size]
@@ -45,19 +45,19 @@ for i in range(epoch):
         accuracy = net.accuracy(x, t)
         acc_list.append(accuracy)
 
-        elapsed_time = time.time() - s_epoch
+        elapsed_time = time.time() - s_batch
         elapsed_time_list.append(elapsed_time)
 
-        ETA_minute = (sum(elapsed_time_list) / len(elapsed_time_list)) * (epoch - i) * (iter_for_epoch - k)
+        ETA_second = (sum(elapsed_time_list) / len(elapsed_time_list)) * (epoch - i) * (iter_for_epoch - k)
 
         print("__________Epoch {}/{}__________".format(i + 1, epoch))
         print("***** Batch: {}/{} *****".format(k + 1, iter_for_epoch))
         print("Loss/Accuracy: {}/{}%".format(loss, accuracy * 100))
         print("Elapsed Time(1 Batch): {}s".format(int(elapsed_time)))
-        if ETA_minute < 60:
-            print("ETA: {}m".format(ETA_minute))
+        if ETA_second < 60:
+            print("ETA: {}m".format((ETA_second / 60) % 60))
         else:
-            print("ETA: {}h {}m".format(ETA_minute // 3600, (ETA_minute / 60) % 60))
+            print("ETA: {}h {}m".format(ETA_second // 3600, (ETA_second / 60) % 60))
 
 net.model_infos['training_time'] = "{}m".format((time.time() - s_training) / 60)
 net.model_infos['loss_list'] = loss_list
