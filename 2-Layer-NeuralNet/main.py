@@ -45,7 +45,7 @@ for i in range(epoch):
 
     ETA_minute = (sum(elapsed_time_list) / len(elapsed_time_list)) * (epoch - i)
 
-    print("__________Epoch {}__________".format(i + 1))
+    print("__________Epoch {}/{}__________".format(i + 1, epoch))
     print("Loss/Accuracy: {}/{}%".format(loss, accuracy * 100))
     print("Elapsed Time(Batch): {}s".format(int(elapsed_time)))
     if ETA_minute < 60:
@@ -56,5 +56,5 @@ for i in range(epoch):
 if not os.path.isdir("model"):
     os.mkdir("model")
 
-with open("model/{}_MNIST_Model.pkl".format(time.strftime("%y-%m-%d")), "wb") as fp:
+with open("model/({})_MNIST_model.pkl".format(time.strftime("%y-%m-%d")), "wb") as fp:
     pickle.dump(net, fp)
