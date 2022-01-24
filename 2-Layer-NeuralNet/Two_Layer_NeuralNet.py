@@ -3,6 +3,7 @@ import numpy as np
 sys.path.append(os.pardir)
 from common.Calc_Gradient import calc_gradient
 from common.Loss_Functions import cross_entropy_error
+from common.Activate_Functions import sigmoid, softmax
 
 class Two_Layer_NeuralNet:
     def __init__(self, input_size:int, hidden_size:int, output_size:int, weight_init_std=0.01):
