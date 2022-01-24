@@ -10,20 +10,24 @@ net = Two_Layer_NeuralNet(784, 50, 10)
 (x_train, t_train), (x_test, t_test) = load_MNIST(normalize=True, flatten=True, one_hot_encoding=True)
 
 learning_rate = 0.01
-train_data_cnt = x_train.shape[0]
 batch_size = 100
 epoch = 17
-iter_for_epoch = train_data_cnt // batch_size
+
+elapsed_time_list = []
 loss_list = []
 acc_list = []
-elapsed_time_list = []
+
+train_data_cnt = x_train.shape[0]
+iter_for_epoch = train_data_cnt // batch_size
 
 x = None
 t = None
 
-for i in range(epoch):
+s_training = time.time()
+
+for i in range(1):#epoch):
     s_epoch = time.time()
-    for k in range(iter_for_epoch):
+    for k in range(1):#iter_for_epoch):
         batch_mask = random.randint(0, train_data_cnt - batch_size)
 
         x = x_train[batch_mask:batch_mask + batch_size]
@@ -35,29 +39,32 @@ for i in range(epoch):
         net.params['W2'] -= (learning_rate * grad['W2'])
         net.params['b2'] -= (learning_rate * grad['b2'])
 
+        loss = net.loss(x, t)
+        loss_list.append(loss)
+
+        accuracy = net.accuracy(x, t)
+        acc_list.append(accuracy)
+
+        elapsed_time = time.time() - s_epoch
+        elapsed_time_list.append(elapsed_time)
+
+        ETA_minute = (sum(elapsed_time_list) / len(elapsed_time_list)) * (epoch - i) * (iter_for_epoch - k)
+
+        print("__________Epoch {}/{}__________".format(i + 1, epoch))
         print("***** Batch: {}/{} *****".format(k + 1, iter_for_epoch))
+        print("Loss/Accuracy: {}/{}%".format(loss, accuracy * 100))
+        print("Elapsed Time(1 Batch): {}s".format(int(elapsed_time)))
+        if ETA_minute < 60:
+            print("ETA: {}m".format(ETA_minute))
+        else:
+            print("ETA: {}h {}m".format(ETA_minute // 3600, (ETA_minute / 60) % 60))
 
-    loss = net.loss(x, t)
-    loss_list.append(loss)
-
-    accuracy = net.accuracy(x, t)
-    acc_list.append(accuracy)
-
-    elapsed_time = time.time() - s_epoch
-    elapsed_time_list.append(elapsed_time)
-
-    ETA_minute = (sum(elapsed_time_list) / len(elapsed_time_list)) * (epoch - i)
-
-    print("__________Epoch {}/{}__________".format(i + 1, epoch))
-    print("Loss/Accuracy: {}/{}%".format(loss, accuracy * 100))
-    print("Elapsed Time(Batch): {}s".format(int(elapsed_time)))
-    if ETA_minute < 60:
-        print("ETA: {}m".format(ETA_minute))
-    else:
-        print("ETA: {}h {}m".format(ETA_minute // 60, ETA_minute % 60))
+net.model_infos['training_time'] = "{}m".format((time.time() - s_training) / 60)
+net.model_infos['loss_list'] = loss_list
+net.model_infos['accuracy_list'] = acc_list
 
 if not os.path.isdir("model"):
     os.mkdir("model")
 
-with open("model/({})_MNIST_model.pkl".format(time.strftime("%y-%m-%d")), "wb") as fp:
+with open("model/({})MNIST_model.pkl".format(time.strftime("%y-%m-%d")), "wb") as fp:
     pickle.dump(net, fp)
