@@ -13,6 +13,7 @@ learning_rate = 0.01
 train_data_cnt = x_train.shape[0]
 batch_size = 100
 epoch = 17
+iter_for_epoch = train_data_cnt // batch_size
 loss_list = []
 acc_list = []
 elapsed_time_list = []
@@ -22,7 +23,7 @@ t = None
 
 for i in range(epoch):
     s_epoch = time.time()
-    for k in range(train_data_cnt // batch_size):
+    for k in range(iter_for_epoch):
         batch_mask = random.randint(0, train_data_cnt - batch_size)
 
         x = x_train[batch_mask:batch_mask + batch_size]
@@ -33,6 +34,8 @@ for i in range(epoch):
         net.params['b1'] -= (learning_rate * grad['b1'])
         net.params['W2'] -= (learning_rate * grad['W2'])
         net.params['b2'] -= (learning_rate * grad['b2'])
+
+        print("***** Batch: {}/{} *****".format(k + 1, iter_for_epoch))
 
     loss = net.loss(x, t)
     loss_list.append(loss)
