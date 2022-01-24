@@ -25,9 +25,9 @@ t = None
 
 s_training = time.time()
 
-for i in range(1):#epoch):
+for i in range(epoch):
     s_epoch = time.time()
-    for k in range(1):#iter_for_epoch):
+    for k in range(iter_for_epoch):
         batch_mask = random.randint(0, train_data_cnt - batch_size)
 
         x = x_train[batch_mask:batch_mask + batch_size]
