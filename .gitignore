@@ -3,3 +3,4 @@ MNIST_pkl/
 MNIST_Raw/
 test.*
 __pycache__/
+model/
