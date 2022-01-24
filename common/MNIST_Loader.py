@@ -93,7 +93,7 @@ def _init_MNIST():
     test_imgs = _load_imgs("test_img.gz")
     test_lbls = _load_labels("test_lbl.gz")
     _log("[_init_MNIST()] Dataset Loaded.")
-    _log("[_init_MNIST()] Elapsed Time: {0}".format(time.time() - s))
+    _log("[_init_MNIST()] Elapsed Time: {0}s".format(time.time() - s))
 
     return (train_imgs, train_lbls), (test_imgs, test_lbls)
 
