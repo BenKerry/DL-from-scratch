@@ -13,9 +13,9 @@ learning_rate = 0.01
 batch_size = 100
 epoch = 17
 
-elapsed_time_list = []
 loss_list = []
 acc_list = []
+elapsed_time_list = []
 
 train_data_cnt = x_train.shape[0]
 iter_for_epoch = train_data_cnt // batch_size
